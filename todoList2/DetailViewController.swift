@@ -29,9 +29,13 @@ class DetailViewController : UIViewController {
         
         let cancel = UIAlertAction(title: "취소", style: .destructive, handler: nil)
         let alert = UIAlertController(title: nil, message: "수정하시겠습니까?" , preferredStyle: .alert)
-        let check = UIAlertAction(title: "확인", style: .default) { (ok) in
+        let check = UIAlertAction(title: "확인", style: .default) { [self] (ok) in
             todoData[self.index].content = self.customTextfield1.text!
-            todoData[self.index].wDate = self.customTextfield2.text!
+            if(customTextfield2.text! == ""){
+                todoData[self.index].wDate = Date().toString()
+            }else{
+                todoData[self.index].wDate = self.customTextfield2.text!
+            }
             self.navigationController?.popViewController(animated: true)
         }
         
