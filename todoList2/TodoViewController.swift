@@ -8,24 +8,39 @@
 import UIKit
 
 class TodoViewController : UIViewController {
-    
+   
+
     var index : Int!
     @IBOutlet weak var TodoView: UITableView!
     @IBOutlet weak var addButton: UIButton!
     @IBAction func addButtonAction(_ sender: Any) {
+        
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.locale = Locale(identifier: "ko_KR")
+        let vc = UIViewController()
+    
+        func dateData () -> String{
+            return String("\(datePicker.date)".prefix(10))
+        }
+
+        
         let alertCon = UIAlertController(title: "할일 추가", message: nil , preferredStyle: .alert)
         let close = UIAlertAction(title: "닫기", style: .destructive, handler: nil)
         let check = UIAlertAction(title: "확인", style: .default){ (ok) in
+            todoData.append(ListData(content: (alertCon.textFields?[0].text)!, wDate: (dateData()) ,isComplete: false))
             self.TodoView.reloadSections(IndexSet(0...0), with: .automatic)
-            todoData.append(ListData(content: (alertCon.textFields?[0].text)!, wDate: (alertCon.textFields?[1].text)! ,isComplete: false))
         }
         
         alertCon.addTextField{ (myTextField) in
             myTextField.placeholder = "할일을 입력해주세요"
+  
         }
-        alertCon.addTextField{ (myTextField) in
-            myTextField.placeholder = "목표 날짜를 입력(2023-08-11)"
-        }
+ 
+        vc.view = datePicker
+        alertCon.setValue(vc, forKey: "contentViewController")
+        
         
         alertCon.addAction(check)
         alertCon.addAction(close)
@@ -50,7 +65,6 @@ class TodoViewController : UIViewController {
     }
 }
 
-
 extension Date{
     
     func toString() -> String {
@@ -60,6 +74,8 @@ extension Date{
             return dateFormatter.string(from: self)
         }
 }
+
+
 
 
 extension TodoViewController : UITableViewDelegate, UITableViewDataSource{
@@ -111,7 +127,6 @@ extension TodoViewController : UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let today = Date()
         let index = indexPath.row
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as? CustomTableViewCell else { return UITableViewCell() }
@@ -127,9 +142,6 @@ extension TodoViewController : UITableViewDelegate, UITableViewDataSource{
             cell.dateLabel?.attributedText = cell.dateLabel.text?.strikeThrough()
         }
         
-        if today.toString() > cell.dateLabel.text! {
-            cell.dateLabel.textColor = .red
-        }
         return cell
     }
     
@@ -139,19 +151,10 @@ extension TodoViewController : UITableViewDelegate, UITableViewDataSource{
         
         if todoData[index].isComplete == false {
             todoData[index].isComplete = true
-            todoData[index].completeDate = Date().toString()
+        
         }
         else {
-            if todoData[index].wDate! != "" {
-                if todoData[index].wDate! > todoData[index].completeDate! {
-                    todoData[index].indate = true
-                }
-                else {
-                    todoData[index].indate = false
-                }
-            }
-            completeData.append(todoData[index])
-            todoData.remove(at: index)
+            todoData[index].isComplete = false
         }
         TodoView.reloadSections(IndexSet(0...0), with: .automatic)
     }

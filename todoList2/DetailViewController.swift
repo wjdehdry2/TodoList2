@@ -15,6 +15,8 @@ class DetailViewController : UIViewController {
         customTextfield2.text = date
     }
     
+    
+
     var content : String!
     var index : Int!
     var date : String!
@@ -33,8 +35,11 @@ class DetailViewController : UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
         
+        
         alert.addAction(check)
         alert.addAction(cancel)
+        
         present(alert, animated: true, completion: nil)
     }
+    
 }

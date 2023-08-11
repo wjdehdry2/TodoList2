@@ -9,8 +9,8 @@ import UIKit
 import Foundation
 
 
-var todoData : [ListData] = [ListData(content: "가슴 이두하는날", wDate: "2023-08-06" , isComplete: false)]
-var completeData : [ListData] = []
+var todoData : [ListData] = [ListData(content: "등 이두하는날", wDate: "2023-08-06" , isComplete: false)]
+var completeData : [ListData] = [ListData(content: "하체 복근하는날", wDate: "2023-08-08" , isComplete: false)]
 
 class ListData {
     var content : String
@@ -45,16 +45,6 @@ extension String {
         let attributeString = NSMutableAttributedString(string: self)
         attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
         return attributeString
-    }
-    func toDate() -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        if let date = dateFormatter.date(from: self) {
-            return date
-        } else {
-            return nil
-        }
     }
 }
 

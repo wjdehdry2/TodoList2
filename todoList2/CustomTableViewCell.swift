@@ -16,15 +16,12 @@ class CustomTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var customSwitch: UISwitch!
     @IBOutlet weak var customLable: UILabel!
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
+
     
     override func prepareForReuse() {
         super.prepareForReuse()
         customLable.attributedText = nil
         dateLabel.attributedText = nil
-        dateLabel.textColor = .black
+        dateLabel.textColor = .red
     }
 }
